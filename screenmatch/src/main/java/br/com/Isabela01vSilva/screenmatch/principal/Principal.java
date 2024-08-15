@@ -3,6 +3,7 @@ package br.com.Isabela01vSilva.screenmatch.principal;
 import br.com.Isabela01vSilva.screenmatch.model.DadosEpisodios;
 import br.com.Isabela01vSilva.screenmatch.model.DadosSerie;
 import br.com.Isabela01vSilva.screenmatch.model.DadosTemporada;
+import br.com.Isabela01vSilva.screenmatch.model.Episodio;
 import br.com.Isabela01vSilva.screenmatch.service.ConsumoApi;
 import br.com.Isabela01vSilva.screenmatch.service.ConverteDados;
 
@@ -49,5 +50,12 @@ public class Principal {
                 .sorted(Comparator.comparing(DadosEpisodios::avaliacao).reversed())
                 .limit(5)
                 .forEach(System.out::println);
+
+        List<Episodio> episodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                        .map(d -> new Episodio(t.numero(), d))
+                ).collect(Collectors.toList());
+
+        episodios.forEach(System.out::println);
     }
 }
