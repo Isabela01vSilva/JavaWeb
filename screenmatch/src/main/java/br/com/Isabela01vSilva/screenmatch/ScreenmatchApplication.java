@@ -1,16 +1,9 @@
 package br.com.Isabela01vSilva.screenmatch;
 
-import br.com.Isabela01vSilva.screenmatch.model.DadosEpisodios;
-import br.com.Isabela01vSilva.screenmatch.model.DadosSerie;
-import br.com.Isabela01vSilva.screenmatch.model.DadosTemporada;
-import br.com.Isabela01vSilva.screenmatch.service.ConsumoApi;
-import br.com.Isabela01vSilva.screenmatch.service.ConverteDados;
+import br.com.Isabela01vSilva.screenmatch.principal.Principal;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class ScreenmatchApplication implements CommandLineRunner {
@@ -21,28 +14,8 @@ public class ScreenmatchApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        ConsumoApi consumoApi = new ConsumoApi();
-        var json = consumoApi.obterDados("https://www.omdbapi.com/?t=gilmore+girls&apikey=81c2fe9f");
-//		System.out.println(json);
-//		json = consumoApi.obterDados("https://coffee.alexflipnote.dev/random.json");
-        System.out.println(json);
 
-        ConverteDados conversor = new ConverteDados();
-        DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
-        System.out.println(dados);
-
-        json = consumoApi.obterDados("https://omdbapi.com/?t=gilmore+girls&season=1&episode=2&apikey=6585022c");
-        DadosEpisodios dadosEpisodios = conversor.obterDados(json, DadosEpisodios.class);
-        System.out.println(dadosEpisodios);
-
-        List<DadosTemporada> temporadas = new ArrayList<>();
-
-        for (int i = 1; i <= dados.totalTemporadas(); i++) {
-            json = consumoApi.obterDados("https://omdbapi.com/?t=gilmore+girls&season=" + i + "&apikey=6585022c");
-            DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
-            temporadas.add(dadosTemporada);
-
-        }
-        temporadas.forEach(System.out::println);
+        Principal principal = new Principal();
+        principal.exibeMenu();
     }
 }
