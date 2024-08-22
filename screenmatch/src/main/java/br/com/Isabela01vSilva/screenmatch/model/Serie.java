@@ -3,6 +3,8 @@ package br.com.Isabela01vSilva.screenmatch.model;
 import br.com.Isabela01vSilva.screenmatch.traducao.service.ConsultaMyMemory;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity
@@ -22,6 +24,11 @@ public class Serie {
     private String poster;
     private String sinopse;
 
+    @Transient
+    private List<Episodio> episodios = new ArrayList<>();
+
+    public Serie() {}
+
     public Serie(DadosSerie dadosSerie) {
         this.titulo = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();
@@ -31,6 +38,14 @@ public class Serie {
         this.poster = dadosSerie.poster();
         this.sinopse = ConsultaMyMemory
                 .obterTraducao(dadosSerie.sinopse()).trim();
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        this.episodios = episodios;
     }
 
     public Long getId() {

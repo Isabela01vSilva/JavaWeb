@@ -1,6 +1,7 @@
 package br.com.Isabela01vSilva.screenmatch.principal;
 
 import br.com.Isabela01vSilva.screenmatch.model.*;
+import br.com.Isabela01vSilva.screenmatch.repository.SerieRepository;
 import br.com.Isabela01vSilva.screenmatch.service.ConsumoApi;
 import br.com.Isabela01vSilva.screenmatch.service.ConverteDados;
 
@@ -16,6 +17,12 @@ public class Principal {
     private final String ENDERECO = "https://omdbapi.com/?t=";
     private final String APIKEY = "&apikey=6585022c";
     private List<DadosSerie> dadosSeries = new ArrayList<>();
+
+    private SerieRepository repositorio;
+
+    public Principal(SerieRepository repositorio) {
+        this.repositorio = repositorio;
+    }
 
     public void exibeMenu() {
 
@@ -54,7 +61,9 @@ public class Principal {
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
-        dadosSeries.add(dados);
+        Serie serie = new Serie(dados);
+        //dadosSeries.add(dados);
+        repositorio.save(serie);
         System.out.println(dados);
     }
 
@@ -79,12 +88,7 @@ public class Principal {
     }
 
     private void listarSeriesBuscadas() {
-
-        List<Serie> series = new ArrayList<>();
-        series = dadosSeries.stream()
-                        .map(d -> new Serie(d))
-                                .collect(Collectors.toList());
-
+        List<Serie> series = repositorio.findAll();
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
