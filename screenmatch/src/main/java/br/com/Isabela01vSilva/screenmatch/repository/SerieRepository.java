@@ -1,6 +1,7 @@
 package br.com.Isabela01vSilva.screenmatch.repository;
 
 import br.com.Isabela01vSilva.screenmatch.model.Categoria;
+import br.com.Isabela01vSilva.screenmatch.model.Episodio;
 import br.com.Isabela01vSilva.screenmatch.model.Serie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,6 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     @Query("select s from Serie s where s.totalTemporadas <= :temporadasMaxima and s.avaliacao >= :avaliacao")
     List<Serie> seriesPorTemporadaEAvaliacao(int temporadasMaxima, double avaliacao);
 
+    @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE e.titulo ILIKE %:trechoEpisodio%")
+    List<Episodio> episodiosPorTrecho(String trechoEpisodio);
 }
