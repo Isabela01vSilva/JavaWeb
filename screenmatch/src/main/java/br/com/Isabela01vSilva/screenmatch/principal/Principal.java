@@ -37,6 +37,8 @@ public class Principal {
                     4 - Buscar série por Titulo
                     5 - Buscar séries por Ator
                     6 - Buscar 5 Tops Series
+                    7 - Buscar séries por Categoria
+                    8 - Filtrar séries por vários requisitos
                                     
                     0 - Sair                                 
                     """;
@@ -64,6 +66,12 @@ public class Principal {
                 case 6:
                     buscarTop5Series();
                     break;
+                case 7:
+                    buscarSeriesPorCategoria();
+                    break;
+                case 8:
+                    filtrarSeriesPorTemporadaEAvaliacao();
+                    break;
                 case 0:
                     System.out.println("Saindo...");
                     break;
@@ -72,7 +80,6 @@ public class Principal {
             }
         }
     }
-
 
     private void buscarSerieWeb() {
         DadosSerie dados = getDadosSerie();
@@ -156,5 +163,26 @@ public class Principal {
         serieTop.forEach(s ->
                 System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
 
+    }
+
+    private void buscarSeriesPorCategoria() {
+        System.out.println("Deseja buscar série de que categoria/gênero?");
+        var nomeGenero = leitura.nextLine();
+        Categoria categoria = Categoria.fromPortugues(nomeGenero);
+        List<Serie> seriesPorCategoria = repositorio.findByGenero(categoria);
+        System.out.println("Séries da categoria " + nomeGenero);
+        seriesPorCategoria.forEach(System.out::println);
+    }
+
+    private void filtrarSeriesPorTemporadaEAvaliacao() {
+        System.out.println("Quantidade de temporadas maximas: ");
+        var temporadasMaxima = leitura.nextInt();
+        System.out.println("Com avaliação a partir de que valor?");
+        var avaliacao = leitura.nextDouble();
+        List<Serie> numeroTemporadasMax = repositorio.seriesPorTemporadaEAvaliacao(temporadasMaxima, avaliacao);
+        System.out.println("Séries Filtradas");
+        numeroTemporadasMax.forEach(t ->
+                System.out.println(t.getTitulo() + " - avaliação" + t.getAvaliacao())
+        );
     }
 }
