@@ -2,6 +2,7 @@ package br.com.Isabela01vSilva.screenmatch.service;
 
 import br.com.Isabela01vSilva.screenmatch.dto.EpisodioDTO;
 import br.com.Isabela01vSilva.screenmatch.dto.SerieDTO;
+import br.com.Isabela01vSilva.screenmatch.model.Categoria;
 import br.com.Isabela01vSilva.screenmatch.model.Serie;
 import br.com.Isabela01vSilva.screenmatch.repository.SerieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +64,10 @@ public class SerieService {
                 .stream()
                 .map(e -> new EpisodioDTO(e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()))
                 .collect(Collectors.toList());
+    }
+
+    public List<SerieDTO> obterSeriesPorCategoria(String nomeGenero) {
+        Categoria categoria = Categoria.fromPortugues(nomeGenero);
+        return converteDados(repositorio.findByGenero(categoria));
     }
 }
